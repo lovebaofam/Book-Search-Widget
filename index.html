@@ -4,89 +4,34 @@
   <meta charset="UTF-8" />
   <title>카카오 도서 검색 위젯</title>
   <style>
-    body {
-      margin: 0;
-      padding: 10px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #ffffff;
-      color: #222;
-    }
-    .search-box {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-    .search-box input {
-      flex: 1;
-      padding: 6px 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    .search-box button {
-      padding: 6px 10px;
-      border: none;
-      border-radius: 4px;
-      background: #f1b300; /* Kakao 느낌 */
-      color: #222;
-      font-size: 13px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .search-box button:hover {
-      background: #ffce33;
-    }
-    .results {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 420px;
-      overflow-y: auto;
-    }
-    .book {
-      display: flex;
-      gap: 8px;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid #eee;
-      background: #fafafa;
-    }
-    .book-thumbnail img {
-      width: 50px;
-      height: 70px;
-      object-fit: cover;
-      border-radius: 3px;
-      border: 1px solid #ddd;
-    }
-    .book-info {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-    .book-title {
-      font-size: 13px;
-      font-weight: 600;
-      line-height: 1.3;
-    }
-    .book-meta {
-      font-size: 11px;
-      color: #666;
-    }
-    .book-link {
-      font-size: 11px;
-      color: #0066cc;
-      text-decoration: none;
-      margin-top: 2px;
-    }
-    .book-link:hover {
-      text-decoration: underline;
-    }
-    .message {
-      font-size: 12px;
-      color: #888;
-      margin-top: 4px;
-    }
+/* 배경을 흰색 + 약간 회색 테두리로 */
+body {
+  background: #ffffff;
+  color: #222;
+  padding: 12px;
+}
+
+.results {
+  max-height: 280px; /* Notion 안에서 높이 조절 */
+  overflow-y: auto;
+}
+
+.book {
+  border: 1px solid #e0e0e0; /* 연한 회색 테두리 */
+  border-radius: 4px;
+  background: #fafafa;
+  padding: 8px;
+}
+
+.book-thumbnail img {
+  border: 1px solid #e0e0e0;
+}
+
+.book-link {
+  color: #f1b300; /* 카카오/교보 느낌 포인트 */
+  font-size: 11px;
+}
+
   </style>
 </head>
 <body>
@@ -205,3 +150,4 @@
   </script>
 </body>
 </html>
+
