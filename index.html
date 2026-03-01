@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>카카오 도서 검색 위젯</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 10px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #ffffff;
+      color: #222;
+    }
+    .search-box {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 6px 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .search-box button {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      background: #f1b300; /* Kakao 느낌 */
+      color: #222;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .search-box button:hover {
+      background: #ffce33;
+    }
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .book {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #eee;
+      background: #fafafa;
+    }
+    .book-thumbnail img {
+      width: 50px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+    }
+    .book-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .book-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .book-meta {
+      font-size: 11px;
+      color: #666;
+    }
+    .book-link {
+      font-size: 11px;
+      color: #0066cc;
+      text-decoration: none;
+      margin-top: 2px;
+    }
+    .book-link:hover {
+      text-decoration: underline;
+    }
+    .message {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="search-box">
+    <input
+      type="text"
+      id="queryInput"
+      placeholder="책 제목 또는 키워드를 입력하세요"
+    />
+    <button id="searchBtn">검색</button>
+  </div>
+  <div id="message" class="message">검색어를 입력하고 Enter 또는 [검색] 버튼을 눌러주세요.</div>
+  <div id="results" class="results"></div>
+
+  <script>
+    const REST_API_KEY = "12493809307a18955f8ac20a20c06f57"
+
+    const queryInput = document.getElementById("queryInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const resultsEl = document.getElementById("results");
+    const messageEl = document.getElementById("message");
+
+    async function searchBooks(query) {
+      if (!query.trim()) {
+        messageEl.textContent = "검색어를 입력해 주세요.";
+        resultsEl.innerHTML = "";
+        return;
+      }
+
+      messageEl.textContent = "검색 중...";
+      resultsEl.innerHTML = "";
+
+      try {
+        const url = new URL("https://dapi.kakao.com/v3/search/book");
+        url.searchParams.set("query", query);
+        url.searchParams.set("size", "5"); // 한 번에 5권
+
+        const res = await fetch(url.toString(), {
+          headers: {
+            Authorization: "KakaoAK " + REST_API_KEY
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error("API 요청 실패: " + res.status);
+        }
+
+        const data = await res.json(); // meta + documents 구조.[web:30]
+        const books = data.documents || [];
+
+        if (books.length === 0) {
+          messageEl.textContent = "검색 결과가 없습니다.";
+          return;
+        }
+
+        messageEl.textContent = `총 ${books.length}권 표시 중`;
+
+        books.forEach((book) => {
+          const item = document.createElement("div");
+          item.className = "book";
+
+          const thumbDiv = document.createElement("div");
+          thumbDiv.className = "book-thumbnail";
+          if (book.thumbnail) {
+            const img = document.createElement("img");
+            img.src = book.thumbnail;
+            img.alt = book.title;
+            thumbDiv.appendChild(img);
+          }
+
+          const infoDiv = document.createElement("div");
+          infoDiv.className = "book-info";
+
+          const titleDiv = document.createElement("div");
+          titleDiv.className = "book-title";
+          titleDiv.textContent = book.title;
+
+          const metaDiv = document.createElement("div");
+          metaDiv.className = "book-meta";
+          const authors = (book.authors || []).join(", ");
+          const publisher = book.publisher || "";
+          const datetime = book.datetime ? book.datetime.slice(0, 10) : "";
+          metaDiv.textContent = [authors, publisher, datetime].filter(Boolean).join(" · ");
+
+          const link = document.createElement("a");
+          link.className = "book-link";
+          link.href = book.url || book.contents;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.textContent = "상세 보기";
+
+          infoDiv.appendChild(titleDiv);
+          infoDiv.appendChild(metaDiv);
+          infoDiv.appendChild(link);
+
+          item.appendChild(thumbDiv);
+          item.appendChild(infoDiv);
+
+          resultsEl.appendChild(item);
+        });
+      } catch (err) {
+        console.error(err);
+        messageEl.textContent = "오류가 발생했습니다. 콘솔을 확인해 주세요.";
+      }
+    }
+
+    searchBtn.addEventListener("click", () => {
+      searchBooks(queryInput.value);
+    });
+
+    queryInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        searchBooks(queryInput.value);
+      }
+    });
+  </script>
+</body>
+</html>
