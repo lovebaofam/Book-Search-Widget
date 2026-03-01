@@ -4,33 +4,105 @@
   <meta charset="UTF-8" />
   <title>카카오 도서 검색 위젯</title>
   <style>
-/* 배경을 흰색 + 약간 회색 테두리로 */
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600&display=swap');
+
 body {
-  background: #ffffff;
+  margin: 0;
+  padding: 10px 12px;
+  font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
   color: #222;
-  padding: 12px;
+  background: none;
+}
+
+.search-box {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 5px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.search-box button {
+  padding: 5px 8px;
+  border: none;
+  border-radius: 4px;
+  background: #f1b300;
+  color: #222;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .results {
-  max-height: 280px; /* Notion 안에서 높이 조절 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
   overflow-y: auto;
 }
 
 .book {
-  border: 1px solid #e0e0e0; /* 연한 회색 테두리 */
-  border-radius: 4px;
-  background: #fafafa;
-  padding: 8px;
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #e5e5e5;
+  background: none;
+  align-items: flex-start;
 }
 
 .book-thumbnail img {
-  border: 1px solid #e0e0e0;
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.book-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.book-title {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #222;
+}
+
+.book-meta {
+  font-size: 11px;
+  color: #666;
+}
+
+.book-price {
+  font-size: 11px;
+  color: #e54c3c;
+  font-weight: 600;
 }
 
 .book-link {
-  color: #f1b300; /* 카카오/교보 느낌 포인트 */
   font-size: 11px;
+  color: #f1b300;
+  text-decoration: none;
+  margin-top: 2px;
 }
+
+.book-link:hover {
+  text-decoration: underline;
+}
+
 
   </style>
 </head>
@@ -150,4 +222,5 @@ body {
   </script>
 </body>
 </html>
+
 
