@@ -16,6 +16,7 @@ body {
 }
 
 .search-box {
+  font-size: 11px;
   display: flex;
   gap: 6px;
   margin-bottom: 10px;
@@ -31,10 +32,10 @@ body {
 
 .search-box button {
   padding: 5px 8px;
-  border: none;
+  border: 1px solid #000;
   border-radius: 4px;
-  background: #f1b300;
-  color: #222;
+  background: transparent;
+  color: #000;
   font-size: 11px;
   font-weight: 600;
   cursor: pointer;
@@ -49,6 +50,8 @@ body {
 }
 
 .book {
+  font-size: 22px;
+  line-height: 1.3;
   display: flex;
   gap: 10px;
   padding: 8px 10px;
@@ -75,25 +78,25 @@ body {
 }
 
 .book-title {
-  font-size: 11px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 1.3;
   color: #222;
 }
 
 .book-meta {
-  font-size: 11px;
+  font-size: 22px;
   color: #666;
 }
 
 .book-price {
-  font-size: 11px;
+  font-size: 22px;
   color: #e54c3c;
   font-weight: 600;
 }
 
 .book-link {
-  font-size: 11px;
+  font-size: 22px;
   color: #f1b300;
   text-decoration: none;
   margin-top: 2px;
@@ -139,7 +142,7 @@ body {
       try {
         const url = new URL("https://dapi.kakao.com/v3/search/book");
         url.searchParams.set("query", query);
-        url.searchParams.set("size", "5"); // 한 번에 5권
+        url.searchParams.set("size", "10");
 
         const res = await fetch(url.toString(), {
           headers: {
@@ -222,5 +225,3 @@ body {
   </script>
 </body>
 </html>
-
-
